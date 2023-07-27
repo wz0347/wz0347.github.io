@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RSA 文件加密和解密</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input[type="file"] {
+      margin-top: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>RSA 文件加密和解密</h1>
+    <label for="publicKey">公钥:</label>
+    <textarea id="publicKey" placeholder="输入服务器端生成的公钥"></textarea>
+    <label for="privateKey">私钥:</label>
+    <textarea id="privateKey" placeholder="输入服务器端生成的私钥"></textarea>
+    <label for="file">选择要加密的文件:</label>
+    <input type="file" id="file">
+    <button onclick="encryptFile()">加密文件</button>
+    <label for="encryptedFile">加密后的文件:</label>
+    <a id="downloadLink" style="display: none;" download></a>
+    <label for="encryptedFile">选择要解密的文件:</label>
+    <input type="file" id="encryptedFile">
+    <button onclick="decryptFile()">解密文件</button>
+    <label for="decryptedFile">解密后的文件:</label>
+    <a id="decryptedDownloadLink" style="display: none;" download></a>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    async function encryptFile() {
+      var publicKey = document.getElementById('publicKey').value;
+      var fileInput = document.getElementById('file');
+
+      var file = fileInput.files[0];
+      var reader = new FileReader();
+
+      reader.onload = async function(e) {
+        var fileData = e.target.result;
+        var encryptedData = await encryptData(fileData, publicKey);
+        var encryptedBlob = new Blob([encryptedData], { type: 'application/octet-stream' });
+        var encryptedFileName = file.name + '.encrypted';
+        var downloadLink = document.getElementById('downloadLink');
+
+        downloadLink.href = URL.createObjectURL(encryptedBlob);
+        downloadLink.download = encryptedFileName;
+        downloadLink.style.display = 'block';
+      };
+
+      reader.readAsArrayBuffer(file);
+    }
+
+    async function decryptFile() {
+      var privateKey = document.getElementById('privateKey').value;
+      var fileInput = document.getElementById('encryptedFile');
+
+      var file = fileInput.files[0];
+      var reader = new FileReader();
+
+      reader.onload = async function(e) {
+        var fileData = e.target.result;
+        var decryptedData = await decryptData(fileData, privateKey);
+        var decryptedBlob = new Blob([decryptedData], { type: 'application/octet-stream' });
+        var decryptedFileName = file.name.replace('.encrypted', '');
+        var downloadLink = document.getElementById('decryptedDownloadLink');
+
+        downloadLink.href = URL.createObjectURL(decryptedBlob);
+        downloadLink.download = decryptedFileName;
+        downloadLink.style.display = 'block';
+      };
+
+      reader.readAsArrayBuffer(file);
+    }
+  </script>
+</body>
+</html>
