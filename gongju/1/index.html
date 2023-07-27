@@ -60,7 +60,6 @@
     <a id="decryptedDownloadLink" style="display: none;" download></a>
   </div>
 
-  <script src="script.js"></script>
   <script>
     async function encryptFile() {
       var publicKey = document.getElementById('publicKey').value;
@@ -104,6 +103,52 @@
       };
 
       reader.readAsArrayBuffer(file);
+    }
+
+    async function encryptData(data, publicKey) {
+      var importedKey = await window.crypto.subtle.importKey(
+        'spki',
+        new TextEncoder().encode(publicKey),
+        {
+          name: 'RSA-OAEP',
+          hash: 'SHA-256',
+        },
+        true,
+        ['encrypt']
+      );
+
+      var encryptedBuffer = await window.crypto.subtle.encrypt(
+        {
+          name: 'RSA-OAEP',
+        },
+        importedKey,
+        new TextEncoder().encode(data)
+      );
+
+      return encryptedBuffer;
+    }
+
+    async function decryptData(data, privateKey) {
+      var importedKey = await window.crypto.subtle.importKey(
+        'pkcs8',
+        new TextEncoder().encode(privateKey),
+        {
+          name: 'RSA-OAEP',
+          hash: 'SHA-256',
+        },
+        true,
+        ['decrypt']
+      );
+
+      var decryptedBuffer = await window.crypto.subtle.decrypt(
+        {
+          name: 'RSA-OAEP',
+        },
+        importedKey,
+        new Uint8Array(data)
+      );
+
+      return decryptedBuffer;
     }
   </script>
 </body>
