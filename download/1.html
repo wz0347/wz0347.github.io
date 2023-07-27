@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AES密码加密示例</title>
+  <title>1</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
 </head>
 <body>
-  <h1>AES密码加密示例</h1>
+  <h1>1</h1>
 
   <div id="passwordForm">
     <label for="password">请输入密码：</label>
@@ -16,9 +16,21 @@
   <div id="result" style="display: none;">
     <h2 id="successMessage" style="color: green;">密码正确，可以进行文件下载操作。</h2>
     <h2 id="errorMessage" style="color: red;">密码错误，请重新输入。</h2>
+    <a id="downloadLink" href="#" style="display: none;">点击此处下载文件</a>
   </div>
 
   <script>
+    // 生成随机字符串
+    function generateRandomString(length) {
+      var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      var result = '';
+      for (var i = 0; i < length; i++) {
+        var randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters.charAt(randomIndex);
+      }
+      return result;
+    }
+
     // 使用AES加密密码
     function encryptPassword(password) {
       var key = CryptoJS.enc.Utf8.parse('12N2y25r'); // 密钥
@@ -32,7 +44,8 @@
     // 验证密码
     function checkPassword() {
       var inputPassword = document.getElementById('password').value;
-      var encryptedPassword = encryptPassword(inputPassword);
+      var randomString = generateRandomString(10);
+      var encryptedPassword = encryptPassword(randomString);
 
       // 替换为实际的加密后的密码
       var storedPassword = '替换为实际的加密后的密码';
@@ -40,9 +53,12 @@
       if (encryptedPassword === storedPassword) {
         document.getElementById('successMessage').style.display = 'block';
         document.getElementById('errorMessage').style.display = 'none';
+        document.getElementById('downloadLink').style.display = 'block';
+        document.getElementById('downloadLink').href = 'https://www.baidu.com';
       } else {
         document.getElementById('successMessage').style.display = 'none';
         document.getElementById('errorMessage').style.display = 'block';
+        document.getElementById('downloadLink').style.display = 'none';
       }
 
       // 清空输入框
