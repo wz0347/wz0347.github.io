@@ -3,6 +3,75 @@
 <head>
   <title>1</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    #passwordForm {
+      margin-top: 50px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="password"] {
+      padding: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 8px 16px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 20px;
+    }
+
+    #successMessage,
+    #errorMessage {
+      display: none;
+      margin-top: 20px;
+    }
+
+    #successMessage {
+      color: green;
+    }
+
+    #errorMessage {
+      color: red;
+    }
+
+    #downloadLink {
+      display: none;
+      margin-top: 20px;
+      font-size: 16px;
+      text-decoration: none;
+      color: #4CAF50;
+    }
+
+    #randomString {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background-color: #f0f0f0;
+      padding: 10px;
+      border-radius: 5px;
+      font-family: monospace;
+    }
+  </style>
 </head>
 <body>
   <h1>1</h1>
@@ -13,11 +82,13 @@
     <button onclick="checkPassword()">提交</button>
   </div>
 
-  <div id="result" style="display: none;">
-    <h2 id="successMessage" style="color: green;">密码正确，可以进行文件下载操作。</h2>
-    <h2 id="errorMessage" style="color: red;">密码错误，请重新输入。</h2>
-    <a id="downloadLink" href="#" style="display: none;">点击此处下载文件</a>
+  <div id="result">
+    <h2 id="successMessage">密码正确，可以进行文件下载操作。</h2>
+    <h2 id="errorMessage">密码错误，请重新输入。</h2>
+    <a id="downloadLink" href="#">点击此处下载文件</a>
   </div>
+
+  <div id="randomString"></div>
 
   <script>
     // 生成随机字符串
@@ -64,6 +135,12 @@
       // 清空输入框
       document.getElementById('password').value = '';
     }
+
+    // 页面加载时显示随机字符串
+    window.onload = function() {
+      var randomString = generateRandomString(10);
+      document.getElementById('randomString').textContent = '随机字符串：' + randomString;
+    };
   </script>
 </body>
 </html>
