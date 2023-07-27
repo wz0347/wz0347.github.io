@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>内容加密</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 100px auto;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        #encrypted-content {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+    <script>
+        function encryptContent() {
+            var content = document.getElementById('content').value;
+            var password = document.getElementById('password').value;
+            var encryptedContent = encrypt(content, password);
+            document.getElementById('encrypted-content').innerText = encryptedContent;
+        }
+
+        function encrypt(content, password) {
+            // 在这里使用您选择的加密算法对内容进行加密
+            // 这里只是一个示例，使用简单的替换算法进行加密
+            var encryptedContent = "";
+
+            for (var i = 0; i < content.length; i++) {
+                var charCode = content.charCodeAt(i);
+                var encryptedCharCode = charCode + password.length;
+                encryptedContent += String.fromCharCode(encryptedCharCode);
+            }
+
+            return encryptedContent;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>内容加密</h1>
+        <form>
+            <label for="content">请输入要加密的内容：</label>
+            <input type="text" name="content" id="content" required>
+            <br><br>
+            <label for="password">请输入加密密码：</label>
+            <input type="password" name="password" id="password" required>
+            <br><br>
+            <input type="button" value="加密" onclick="encryptContent()">
+        </form>
+        <div id="encrypted-content"></div>
+    </div>
+</body>
+</html>
