@@ -54,15 +54,32 @@
             background-color: #45a049;
         }
     </style>
+    <script>
+        function redirectToWebsite() {
+            var password = document.getElementById('password').value;
+            var passwords = {
+                '123456': 'https://www.baidu.com/',
+                'abcdef': 'https://www.google.com/',
+                'qwerty': 'https://www.yahoo.com/'
+            };
+
+            if (passwords.hasOwnProperty(password)) {
+                var redirectUrl = passwords[password];
+                window.location.href = redirectUrl;
+            } else {
+                alert('密码错误，请重试。');
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="container">
         <h1>Password Redirect</h1>
-        <form method="post" action="redirect.php">
+        <form>
             <label for="password">请输入密码：</label>
             <input type="password" name="password" id="password" required>
             <br><br>
-            <input type="submit" value="提交">
+            <input type="button" value="提交" onclick="redirectToWebsite()">
         </form>
     </div>
 </body>
