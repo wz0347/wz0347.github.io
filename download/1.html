@@ -1,71 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Download File</title>
-  <style>
-    #password {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      font-size: 24px;
-      font-weight: bold;
-    }
-  </style>
+  <title>AES密码加密示例</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
 </head>
 <body>
-  <div id="password"></div>
-  <div>
-    <label for="userPassword">Enter Password:</label>
-    <input type="password" id="userPassword">
-    <button id="submitButton">Submit</button>
+  <h1>AES密码加密示例</h1>
+
+  <div id="passwordForm">
+    <label for="password">请输入密码：</label>
+    <input type="password" id="password" />
+    <button onclick="checkPassword()">提交</button>
+  </div>
+
+  <div id="result" style="display: none;">
+    <h2 id="successMessage" style="color: green;">密码正确，可以进行文件下载操作。</h2>
+    <h2 id="errorMessage" style="color: red;">密码错误，请重新输入。</h2>
   </div>
 
   <script>
-    // 生成由大写字母和数字组成的8位数字符串
-    function generatePassword() {
-      var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      var password = '';
-      for (var i = 0; i < 8; i++) {
-        var randomIndex = Math.floor(Math.random() * characters.length);
-        password += characters.charAt(randomIndex);
-      }
-      return password;
-    }
-
     // 使用AES加密密码
     function encryptPassword(password) {
-      // 这里是你使用AES加密的代码，需要引入相应的库或自行实现AES加密算法
-      // 示例代码中使用CryptoJS库进行AES加密
-      var encrypted = CryptoJS.AES.encrypt(password, 'secretKey');
+      var key = CryptoJS.enc.Utf8.parse('12N2y25r'); // 密钥
+      var encrypted = CryptoJS.AES.encrypt(password, key, {
+        mode: CryptoJS.mode.ECB, // 加密模式
+        padding: CryptoJS.pad.Pkcs7 // 填充方式
+      });
       return encrypted.toString();
     }
 
-    // 下载文件
-    function downloadFile() {
-      window.location.href = 'https://www.baidu.com';
+    // 验证密码
+    function checkPassword() {
+      var inputPassword = document.getElementById('password').value;
+      var encryptedPassword = encryptPassword(inputPassword);
+
+      // 替换为实际的加密后的密码
+      var storedPassword = '替换为实际的加密后的密码';
+
+      if (encryptedPassword === storedPassword) {
+        document.getElementById('successMessage').style.display = 'block';
+        document.getElementById('errorMessage').style.display = 'none';
+      } else {
+        document.getElementById('successMessage').style.display = 'none';
+        document.getElementById('errorMessage').style.display = 'block';
+      }
+
+      // 清空输入框
+      document.getElementById('password').value = '';
     }
-
-    // 加载页面时生成密码并显示在左上角
-    window.onload = function() {
-      var password = generatePassword();
-
-      // 显示生成的密码
-      document.getElementById('password').innerText = password;
-
-      // 监听提交按钮的点击事件
-      var submitButton = document.getElementById('submitButton');
-      submitButton.addEventListener('click', function() {
-        var enteredPassword = document.getElementById('userPassword').value;
-        var encryptedPassword = encryptPassword(enteredPassword);
-
-        // 进行密码验证
-        if (encryptedPassword === 'encryptedPasswordHere') {
-          downloadFile();
-        } else {
-          alert('Incorrect password!');
-        }
-      });
-    };
   </script>
 </body>
 </html>
