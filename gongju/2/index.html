@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cookie 示例</title>
+  <script>
+    function generateCookie() {
+      var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      var cookieValue = '';
+      for (var i = 0; i < 16; i++) {
+        var randomIndex = Math.floor(Math.random() * characters.length);
+        cookieValue += characters.charAt(randomIndex);
+      }
+      document.cookie = 'user=' + cookieValue;
+      document.getElementById('cookieValue').textContent = cookieValue;
+    }
+
+    function checkCookie() {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.indexOf('user=') === 0) {
+          var cookieValue = cookie.substring('user='.length);
+          document.getElementById('cookieValue').textContent = cookieValue;
+          break;
+        }
+      }
+    }
+
+    window.onload = function() {
+      if (document.cookie.indexOf('user=') === -1) {
+        generateCookie();
+      } else {
+        checkCookie();
+      }
+    };
+  </script>
+</head>
+<body>
+  <h1>Welcome to the Cookie Example</h1>
+  <p>Your user cookie value is: <span id="cookieValue"></span></p>
+</body>
+</html>
