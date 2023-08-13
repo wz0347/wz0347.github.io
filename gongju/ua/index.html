@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>User Agent解析</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #input-form {
+            margin-bottom: 20px;
+        }
+
+        #result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        #result-table th, #result-table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        #result-table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Agent解析</h1>
+
+    <form id="input-form">
+        <label for="ua-input">请输入User Agent：</label>
+        <input type="text" id="ua-input">
+        <button type="button" onclick="parseUserAgent()">解析</button>
+    </form>
+
+    <table id="result-table">
+        <tr>
+            <th>参数</th>
+            <th>值</th>
+        </tr>
+        <tr>
+            <td>浏览器</td>
+            <td id="browser"></td>
+        </tr>
+        <tr>
+            <td>浏览器引擎</td>
+            <td id="engine"></td>
+        </tr>
+        <tr>
+            <td>CPU</td>
+            <td id="cpu"></td>
+        </tr>
+        <tr>
+            <td>系统</td>
+            <td id="os"></td>
+        </tr>
+        <tr>
+            <td>设备</td>
+            <td id="device"></td>
+        </tr>
+    </table>
+
+    <script>
+        function parseUserAgent() {
+            var uaInput = document.getElementById("ua-input").value;
+            var parser = new UAParser();
+            var result = parser.setUA(uaInput).getResult();
+
+            document.getElementById("browser").textContent = result.browser.name || "无";
+            document.getElementById("engine").textContent = result.engine.name || "无";
+            document.getElementById("cpu").textContent = result.cpu.architecture || "无";
+            document.getElementById("os").textContent = result.os.name || "无";
+            document.getElementById("device").textContent = result.device.model || "无";
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ua-parser-js/0.7.29/ua-parser.min.js"></script>
+</body>
+</html>
