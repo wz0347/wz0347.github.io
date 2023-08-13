@@ -33,24 +33,10 @@
         #result-table th {
             background-color: #f2f2f2;
         }
-
-        #ua-info {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        #ua-info label {
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
     <h1>User Agent解析</h1>
-
-    <div id="ua-info">
-        <label for="current-ua">您当前的User Agent：</label>
-        <span id="current-ua"></span>
-    </div>
 
     <form id="input-form">
         <label for="ua-input">请输入User Agent：</label>
@@ -85,22 +71,19 @@
         </tr>
     </table>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ua-parser-js/0.7.29/ua-parser.min.js"></script>
     <script>
         function parseUserAgent() {
             var uaInput = document.getElementById("ua-input").value;
             var parser = new UAParser();
             var result = parser.setUA(uaInput).getResult();
 
-            document.getElementById("browser").textContent = result.browser.name || "无";
-            document.getElementById("engine").textContent = result.engine.name || "无";
-            document.getElementById("cpu").textContent = result.cpu.architecture || "无";
-            document.getElementById("os").textContent = result.os.name || "无";
-            document.getElementById("device").textContent = result.device.model || "无";
+            document.getElementById("browser").textContent = result.browser.name || "无法判断";
+            document.getElementById("engine").textContent = result.engine.name || "无法判断";
+            document.getElementById("cpu").textContent = result.cpu.architecture || "无法判断";
+            document.getElementById("os").textContent = result.os.name || "无法判断";
+            document.getElementById("device").textContent = result.device.model || "无法判断";
         }
-
-        // 获取当前的User Agent
-        document.getElementById("current-ua").textContent = navigator.userAgent;
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ua-parser-js/0.7.29/ua-parser.min.js"></script>
 </body>
 </html>
