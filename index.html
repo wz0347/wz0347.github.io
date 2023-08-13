@@ -1,87 +1,106 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Password Redirect</title>
+    <meta charset="UTF-8">
+    <title>User Agent解析</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
             margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 100px auto;
-            background-color: #fff;
-            border-radius: 5px;
             padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             text-align: center;
-            color: #333;
         }
 
-        form {
-            text-align: center;
+        #input-form {
+            margin-bottom: 20px;
         }
 
-        label {
-            display: block;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        input[type="password"] {
+        #result-table {
             width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        #result-table th, #result-table td {
             padding: 10px;
-            border-radius: 5px;
             border: 1px solid #ccc;
         }
 
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        #result-table th {
+            background-color: #f2f2f2;
         }
 
-        input[type="submit"]:hover {
-            background-color: #45a049;
+        #ua-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #ua-info label {
+            font-weight: bold;
         }
     </style>
-    <script>
-        function redirectToWebsite() {
-            var password = document.getElementById('password').value;
-            var passwords = {
-                'baidu': 'https://www.baidu.com/',
-                'google': 'https://www.google.com/',
-                'ua': '/gongju/ua',
-                'zhuye': '/'
-            };
-
-            if (passwords.hasOwnProperty(password)) {
-                var redirectUrl = passwords[password];
-                window.location.href = redirectUrl;
-            } else {
-                alert('密码错误，请重试。');
-            }
-        }
-    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Password Redirect</h1>
-        <form>
-            <label for="password">请输入密码：</label>
-            <input type="password" name="password" id="password" required>
-            <br><br>
-            <input type="button" value="提交" onclick="redirectToWebsite()">
-        </form>
+    <h1>User Agent解析</h1>
+
+    <div id="ua-info">
+        <label for="current-ua">您当前的User Agent：</label>
+        <span id="current-ua"></span>
     </div>
+
+    <form id="input-form">
+        <label for="ua-input">请输入User Agent：</label>
+        <input type="text" id="ua-input">
+        <button type="button" onclick="parseUserAgent()">解析</button>
+    </form>
+
+    <table id="result-table">
+        <tr>
+            <th>参数</th>
+            <th>值</th>
+        </tr>
+        <tr>
+            <td>浏览器</td>
+            <td id="browser"></td>
+        </tr>
+        <tr>
+            <td>浏览器引擎</td>
+            <td id="engine"></td>
+        </tr>
+        <tr>
+            <td>CPU</td>
+            <td id="cpu"></td>
+        </tr>
+        <tr>
+            <td>系统</td>
+            <td id="os"></td>
+        </tr>
+        <tr>
+            <td>设备</td>
+            <td id="device"></td>
+        </tr>
+    </table>
+
+    <script>
+        function parseUserAgent() {
+            var uaInput = document.getElementById("ua-input").value;
+            var parser = new UAParser();
+            var result = parser.setUA(uaInput).getResult();
+
+            document.getElementById("browser").textContent = result.browser.name || "无";
+            document.getElementById("engine").textContent = result.engine.name || "无";
+            document.getElementById("cpu").textContent = result.cpu.architecture || "无";
+            document.getElementById("os").textContent = result.os.name || "无";
+            document.getElementById("device").textContent = result.device.model || "无";
+        }
+
+        // 获取当前的User Agent
+        document.getElementById("current-ua").textContent = navigator.userAgent;
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ua-parser-js/0.7.29/ua-parser.min.js"></script>
 </body>
 </html>
